@@ -9,7 +9,8 @@ class CsvReader:
         with open(file_path) as f:
             csv_reader = csv.reader(f, delimiter=delimiter)
             columns = next(csv_reader)
-            data = dataWithColumns(data=csv_reader, columns=self._create_csv_column_dict(columns))
+            unread_data = dataWithColumns(data=csv_reader, columns=self._create_csv_column_dict(columns))
+            data = self._read_in_data(unread_data)
         return data
 
     @staticmethod
@@ -18,6 +19,14 @@ class CsvReader:
         column_index = 0
         column_indices = dict()
         for name in columns:
-            column_indices[name] = column_index
+            if name:
+                column_indices[name] = column_index
             column_index += 1
         return column_indices
+
+    @staticmethod
+    def _read_in_data(data_with_columns):
+        columns = data_with_columns.columns
+        data_structure = namedtuple('MbtaData', [str(k) for k in columns.keys() if str(k)])
+        return dataWithColumns([data_structure(**{col: line[columns[col]] for col in columns.keys() if col})
+                                for line in data_with_columns.data], columns)
