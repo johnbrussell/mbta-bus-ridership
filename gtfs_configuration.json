@@ -1,0 +1,13 @@
+{
+  "agencies": {
+    "mbta": {
+      "data_sets": {
+        "2019-10-30": {
+          "start_date": "2019-10-30",
+          "end_date": "2019-11-05",
+          "route_types_to_solve": [3, 11]
+        }
+      }
+    }
+  }
+}
